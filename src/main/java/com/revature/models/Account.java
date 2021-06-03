@@ -2,15 +2,15 @@ package com.revature.models;
 
 public class Account {
 	private Integer id;
-	private Integer balance;
+	private Float balance;
 	
 	public Account() {}
 	
-	public Account(Integer balance) {
+	public Account(Float balance) {
 		this.balance = balance;
 	}
 	
-	public Account(Integer id, Integer balance) {
+	public Account(Integer id, Float balance) {
 		this.id = id;
 		this.balance = balance;
 	}
@@ -23,11 +23,11 @@ public class Account {
 		this.id = id;
 	}
 
-	public Integer getBalance() {
+	public Float getBalance() {
 		return balance;
 	}
 
-	public void setBalance(Integer balance) {
+	public void setBalance(Float balance) {
 		this.balance = balance;
 	}
 

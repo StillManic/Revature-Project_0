@@ -49,5 +49,8 @@ public class EmployeeRepository implements GenericRepository<Employee> {
 	public void delete(Employee e) {
 		MockDB.employees.remove(e.getId());
 	}
-
+	
+//	public void print() {
+//		System.out.println("Employee repo is printing!");
+//	}
 }

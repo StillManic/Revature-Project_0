@@ -15,6 +15,7 @@ public class Customer {
 		this.id = id;
 		this.username = username;
 		this.password = password;
+		this.accounts = new HashMap<Integer, Account>();
 	}
 	
 	public Customer(String username, String password, Account... accounts) {
