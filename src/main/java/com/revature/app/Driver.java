@@ -135,8 +135,8 @@ public class Driver {
 		 * "6. Logout"
 		 */
 		String[] command;
-		int accountID;
-		Account account;
+		int fromID, toID;
+		Account fromAccount, toAccount;
 		float amount;
 		while (true) {
 			command = scanner.nextLine().split(" ");
@@ -152,26 +152,26 @@ public class Driver {
 						break;
 					}
 					
-					accountID = Integer.parseInt(command[1]);
-					if (!customer.getAccounts().containsKey(accountID)) {
-						System.out.println("You do not have an account with the id of " + accountID);
+					fromID = Integer.parseInt(command[1]);
+					if (!customer.getAccounts().containsKey(fromID)) {
+						System.out.println("You do not have an account with the id of " + fromID);
 						break;
 					}
 					
-					account = customer.getAccounts().get(accountID);
+					fromAccount = customer.getAccounts().get(fromID);
 					amount = Float.parseFloat(command[2]);
 					if (amount < 0) {
 						System.out.println("You cannot withdraw a negative amount.");
 						break;
-					} else if (amount > account.getBalance()) {
-						System.out.printf("You cannot withdraw $%.2f from account %d because its balance is only $%.2f.%n", amount, accountID, account.getBalance());
+					} else if (amount > fromAccount.getBalance()) {
+						System.out.printf("You cannot withdraw $%.2f from account %d because its balance is only $%.2f.%n", amount, fromID, fromAccount.getBalance());
 						break;
 					} else {
-						System.out.printf("Are you sure you wish to withdraw $%.2f from account %d? Y/N: ", amount, accountID);
+						System.out.printf("Are you sure you wish to withdraw $%.2f from account %d? Y/N: ", amount, fromID);
 						boolean confirmation = scanner.nextLine().equalsIgnoreCase("y");
 						if (confirmation) {
-							account.setBalance(account.getBalance() - amount);
-							System.out.printf("You have withdrawn $%.2f from account %d.%n%n", amount, accountID);
+							fromAccount.setBalance(fromAccount.getBalance() - amount);
+							System.out.printf("You have withdrawn $%.2f from account %d.%n%n", amount, fromID);
 							printAccounts();
 							printMenu(customer_menu, "Logout", true);
 						}
@@ -180,30 +180,54 @@ public class Driver {
 				case "3":
 					// deposit money - "3 {account_id} {amount}"
 					if (command.length != 3) {
-						System.out.println("Please enter \"3\" followed by the account number followed by the amount you wish to withdraw.");
+						System.out.println("Please enter \"3\" followed by the account number, followed by the amount you wish to deposit.");
 						break;
 					}
 					
-					accountID = Integer.parseInt(command[1]);
-					if (!customer.getAccounts().containsKey(accountID)) {
-						System.out.println("You do not have an account with the id of " + accountID);
+					fromID = Integer.parseInt(command[1]);
+					if (!customer.getAccounts().containsKey(fromID)) {
+						System.out.println("You do not have an account with the id of " + fromID);
 						break;
 					}
 					
-					account = customer.getAccounts().get(accountID);
+					fromAccount = customer.getAccounts().get(fromID);
 					amount = Float.parseFloat(command[2]);
 					if (amount < 0) {
 						System.out.println("You cannot deposit a negative amount.");
 						break;
 					} else {
-						account.setBalance(account.getBalance() + amount);
-						System.out.printf("You have depositted $%.2f into account %d.%n%n", amount, accountID);
+						fromAccount.setBalance(fromAccount.getBalance() + amount);
+						System.out.printf("You have depositted $%.2f into account %d.%n%n", amount, fromID);
 						printAccounts();
 						printMenu(customer_menu, "Logout", true);
 					}
 					break;
 				case "4":
-					// post money transfer
+					// post money transfer - "4 {from_id} {to_id} {amount}
+					if (command.length != 4) {
+						System.out.println("Please enter \"4\" followed by the account number you want to transfer from, followed by the account number you want to transfer to, followed by the amount you wish to transfer.");
+						break;
+					}
+					
+					fromID = Integer.parseInt(command[1]);
+					toID = Integer.parseInt(command[2]);
+					if (!customer.getAccounts().containsKey(fromID)) {
+						System.out.println("You do not have an account with the id of " + fromID);
+						break;
+					} else if (!customer.getAccounts().containsKey(toID)) {
+						System.out.println("You do not have an account with the id of " + toID);
+						break;
+					}
+					
+					fromAccount = customer.getAccounts().get(fromID);
+					toAccount = customer.getAccounts().get(toID);
+					amount = Float.parseFloat(command[3]);
+					if (amount < 0) {
+						System.out.println("You cannot transfer a negative amount.");
+						break;
+					} else {
+						
+					}
 				case "5":
 					// accept money transfer
 				case "6":
@@ -222,8 +246,6 @@ public class Driver {
 		boolean quit = false;
 		
 		System.out.println("Welcome to Raptor Inc.'s Automated Banking Interface!\n");
-//		printMenu(main_menu, "Quit", true);
-//		Customer customer;
 		do {
 			switch (currentMenu) {
 				case MAIN:
@@ -237,8 +259,6 @@ public class Driver {
 					break;
 			}
 		} while (!quit);
-		
-		
 		
 		scanner.close();
 	}

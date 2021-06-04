@@ -6,6 +6,7 @@ import java.util.Map;
 public class Customer {
 	private Integer id;
 	private String username, password;
+	private boolean isEmployee;
 	
 	private Map<Integer, Account> accounts;
 	
@@ -15,12 +16,30 @@ public class Customer {
 		this.id = id;
 		this.username = username;
 		this.password = password;
+		this.isEmployee = false;
 		this.accounts = new HashMap<Integer, Account>();
 	}
 	
-	public Customer(String username, String password, Account... accounts) {
+	public Customer(Integer id, String username, String password, Boolean isEmployee) {
+		this.id = id;
 		this.username = username;
 		this.password = password;
+		this.isEmployee = isEmployee;
+		this.accounts = new HashMap<Integer, Account>();
+	}
+	
+	public Customer(String username, String password, Account...accounts) {
+		this.username = username;
+		this.password = password;
+		this.isEmployee = false;
+		this.accounts = new HashMap<Integer, Account>();
+		for (Account a : accounts) this.accounts.put(a.getId(), a);
+	}
+	
+	public Customer(String username, String password, Boolean isEmployee, Account... accounts) {
+		this.username = username;
+		this.password = password;
+		this.isEmployee = isEmployee;
 		this.accounts = new HashMap<Integer, Account>();
 		for (Account a : accounts) this.accounts.put(a.getId(), a);
 	}
@@ -48,6 +67,14 @@ public class Customer {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public Boolean isEmployee() {
+		return this.isEmployee;
+	}
+	
+	public void setEmployee(Boolean isEmployee) {
+		this.isEmployee = isEmployee;
+	}
 
 	public Map<Integer, Account> getAccounts() {
 		return accounts;
@@ -70,6 +97,7 @@ public class Customer {
 		int result = 1;
 		result = prime * result + ((accounts == null) ? 0 : accounts.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + (isEmployee ? 1231 : 1237);
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
@@ -90,17 +118,23 @@ public class Customer {
 			if (other.id != null) return false;
 		} else if (!id.equals(other.id)) return false;
 		
+		if (isEmployee != other.isEmployee) return false;
+		
 		if (password == null) {
 			if (other.password != null) return false;
 		} else if (!password.equals(other.password)) return false;
+		
 		if (username == null) {
 			if (other.username != null) return false;
 		} else if (!username.equals(other.username)) return false;
+		
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", username=" + username + ", password=" + password + ", accounts=" + accounts + "]";
+		return "Customer [id=" + id + ", username=" + username + ", password=" + password + ", isEmployee=" + isEmployee + ", accounts=" + accounts + "]";
 	}
+
+	
 }

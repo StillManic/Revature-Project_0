@@ -11,8 +11,8 @@ public interface GenericRepository<T> {
 	public Map<Integer, T> getAll();
 	
 	// Update
-	public void update(T t);
+	public boolean update(T t);
 	
 	// Delete
-	public void delete(T t);
+	public boolean delete(T t);
 }

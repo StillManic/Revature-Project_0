@@ -25,7 +25,9 @@ public class JDBCConnection {
 				String url = props.getProperty("url");
 				String username = props.getProperty("username");
 				String password = props.getProperty("password");
+				String schema = props.getProperty("currentSchema");
 				conn = DriverManager.getConnection(url, username, password);
+				conn.setSchema(schema);
 				return conn;
 			}
 		} catch (SQLException | IOException | ClassNotFoundException e) {

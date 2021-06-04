@@ -5,18 +5,14 @@ import java.util.Map;
 
 import com.revature.models.Account;
 import com.revature.models.Customer;
-import com.revature.models.Employee;
 import com.revature.repositories.AccountRepository;
 import com.revature.repositories.CustomerRepository;
 
 public class MockDB {
-	public static Map<Integer, Employee> employees = new HashMap<Integer, Employee>();
 	public static Map<Integer, Customer> customers = new HashMap<Integer, Customer>();
 	public static Map<Integer, Account> accounts = new HashMap<Integer, Account>();
 	
 	static {
-		employees.put(1, new Employee(1, "gerald", "strong_password"));
-		
 		customers.put(1, new Customer(1, "jessica", "camelot"));
 		customers.put(2, new Customer(2, "batman", "robin"));
 		customers.put(3, new Customer(3, "lesly", "lesly"));
