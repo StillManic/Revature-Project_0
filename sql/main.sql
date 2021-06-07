@@ -1,22 +1,37 @@
 drop table if exists accounts;
 drop table if exists customers;
-drop table if exists employees;
+drop table if exists transactions;
 
 truncate table accounts;
 
 create table customers (
 	id serial primary key,
-	username varchar(30) not null,
+	username varchar(30) unique not null,
 	password varchar(30) not null,
 	employee bool
 );
 
 create table accounts (
-	id serial,
+	id serial primary key,
 	balance numeric(20, 2),
-	customer int references customers, -- FK to customers table
-	primary key (id, customer)
+	customer int references customers -- FK to customers table
 );
+
+create table transactions (
+	id serial primary key,
+	source int references accounts(id), -- FK to accounts table
+	type varchar(20),
+--	amount numeric(20, 2)
+	amount numeric(20, 2),
+	receiver int references accounts(id) -- FK to accounts table, null if type is not "transfer"
+);
+
+create procedure log_transaction(source int, type varchar(20), amount numeric(20, 2), receiver int)
+--returns table (id int, source int, type varchar(20), amount numeric(20, 2), receiver int)
+language sql
+as $$
+	insert into transactions values (default, source, type, amount, receiver) returning *;
+$$;
 
 /*
 create table employees (

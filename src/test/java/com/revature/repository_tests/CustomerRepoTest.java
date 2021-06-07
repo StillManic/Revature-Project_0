@@ -85,19 +85,17 @@ public class CustomerRepoTest {
 //		Map<Integer, Customer> expected = new HashMap<Integer, Customer>();
 //		
 //	}
-	
+		
 	@After
 	public void after() {
 		try {
 			conn.rollback(sp);
 			conn.setAutoCommit(true);
 			String sql = String.format("alter sequence customers_id_seq restart with %d;", expectedId);
-			try {
-				PreparedStatement ps = conn.prepareStatement(sql);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+//			String sql = "alter sequence customers_id_seq restart with ?;";
+			PreparedStatement ps = conn.prepareStatement(sql);
+//			ps.setString(1, Integer.toString(expectedId));
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

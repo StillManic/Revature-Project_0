@@ -11,7 +11,6 @@ import java.util.Map;
 
 import com.revature.models.Customer;
 import com.revature.utils.JDBCConnection;
-import com.revature.utils.MockDB;
 
 public class CustomerRepository implements GenericRepository<Customer> {
 	private static CustomerRepository instance;
@@ -26,13 +25,6 @@ public class CustomerRepository implements GenericRepository<Customer> {
 	
 	@Override
 	public Customer add(Customer c) {
-		// "c" does not yet have an id, so we need to assign it to the max that we have plus one
-//		Customer maxCustomer = MockDB.customers.values().stream().max((customer1, customer2) -> customer1.getId().compareTo(customer2.getId())).orElse(null);
-//		Integer id = maxCustomer != null ? maxCustomer.getId() + 1 : 1;
-//		c.setId(id);
-//		MockDB.customers.put(id, c);
-//		return c;
-		
 		//TODO: add c.accounts to account table!!!
 		
 		String sql = "insert into customers values (default, ?, ?, ?) returning *;";
@@ -55,8 +47,6 @@ public class CustomerRepository implements GenericRepository<Customer> {
 
 	@Override
 	public Customer getById(Integer id) {
-//		return MockDB.customers.get(id);
-		
 		String sql = "select * from customers where id = ?;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -79,10 +69,6 @@ public class CustomerRepository implements GenericRepository<Customer> {
 	}
 	
 	public Customer getByUsernameAndPassword(String username, String password) {
-//		if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
-//			return MockDB.customers.values().stream().filter((c) -> c.getUsername().equals(username) && c.getPassword().equals(password)).findFirst().orElse(null);
-//		}
-		
 		String sql = "select * from customers where username = ? and \"password\" = ?;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -131,8 +117,6 @@ public class CustomerRepository implements GenericRepository<Customer> {
 
 	@Override
 	public Map<Integer, Customer> getAll() {
-//		return MockDB.customers;
-		
 		Map<Integer, Customer> map = new HashMap<Integer, Customer>();
 		String sql = "select * from customers;";
 		try {
@@ -159,14 +143,6 @@ public class CustomerRepository implements GenericRepository<Customer> {
 
 	@Override
 	public boolean update(Customer c) {
-//		if (MockDB.customers.containsKey(c.getId())) {
-//			Customer storedCustomer = MockDB.customers.get(c.getId());
-//			storedCustomer.setUsername(c.getUsername());
-//			storedCustomer.setPassword(c.getPassword());
-//			storedCustomer.setAccounts(c.getAccounts());
-//			return true;
-//		}
-		
 		//TODO: do we need to update the Accounts table?
 		String sql = "update customers set username = ?, password = ?, employee = ? returning *;";
 		try {
@@ -184,8 +160,6 @@ public class CustomerRepository implements GenericRepository<Customer> {
 
 	@Override
 	public boolean delete(Customer c) {
-//		MockDB.customers.remove(c.getId());
-		
 		String sql = "delete from customers where id = ?;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);

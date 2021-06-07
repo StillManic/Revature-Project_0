@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.revature.models.Account;
 import com.revature.utils.JDBCConnection;
-import com.revature.utils.MockDB;
 
 public class AccountRepository implements GenericRepository<Account> {
 	private static AccountRepository instance;
@@ -24,13 +23,6 @@ public class AccountRepository implements GenericRepository<Account> {
 	
 	@Override
 	public Account add(Account a) {
-		// "a" does not yet have an id, so we need to assign it to the max that we have plus one
-//		Account maxAccount = MockDB.accounts.values().stream().max((account1, account2) -> account1.getId().compareTo(account2.getId())).orElse(null);
-//		Integer id = maxAccount != null ? maxAccount.getId() + 1 : 1;
-//		a.setId(id);
-//		MockDB.accounts.put(id, a);
-//		return a;
-		
 		String sql = "insert into accounts values (default, ?, ?) returning *;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -50,8 +42,6 @@ public class AccountRepository implements GenericRepository<Account> {
 
 	@Override
 	public Account getById(Integer id) {
-//		return MockDB.accounts.get(id);
-		
 		String sql = "select * from accounts where id = ?;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -96,8 +86,6 @@ public class AccountRepository implements GenericRepository<Account> {
 
 	@Override
 	public Map<Integer, Account> getAll() {
-//		return MockDB.accounts;
-		
 		Map<Integer, Account> map = new HashMap<Integer, Account>();
 		String sql = "select * from accounts;";
 		try {
@@ -122,10 +110,6 @@ public class AccountRepository implements GenericRepository<Account> {
 
 	@Override
 	public boolean update(Account a) {
-//		if (MockDB.accounts.containsKey(a.getId())) {
-//			MockDB.accounts.get(a.getId()).setBalance(a.getBalance());
-//		}
-		
 		String sql = "update accounts set balance = ? where id = ? returning *;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -141,8 +125,6 @@ public class AccountRepository implements GenericRepository<Account> {
 
 	@Override
 	public boolean delete(Account a) {
-//		MockDB.accounts.remove(a.getId());
-		
 		String sql = "delete from breeds where id = ?;";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
