@@ -39,7 +39,7 @@ public class Transaction {
 	}
 	
 	public Account getReceiver() {
-		return this.getReceiver();
+		return this.receiver;
 	}
 	
 	public void setReceiver(Account receiver) {

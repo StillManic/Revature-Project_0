@@ -22,17 +22,28 @@ public class CustomerServicesImpl implements CustomerServices {
 		return this.customer;
 	}
 	
+	public Customer getCustomer(Integer id) {
+		return CustomerRepository.getInstance().getById(id);
+	}
+	
+	public Customer updateCustomer() {
+		this.customer = CustomerRepository.getInstance().getById(this.customer.getId());
+		return this.customer;
+	}
+	
 	private static String[] parseInfo(Scanner scanner, boolean signingUp) {
 		String[] info = new String[2];
 		Driver.printMessage("Please enter %s login information:%n", signingUp ? "new" : "your");
 		Driver.printMessage("Username: ", false);
 		info[0] = scanner.next();
+		scanner.nextLine();
 		Driver.printMessage("Password: ", false);
 		info[1] = scanner.next();
+		scanner.nextLine();
 		
 		if (signingUp) {
 			Driver.printMessage("Confirm Password: ");
-			String confirmation = scanner.next();
+			String confirmation = scanner.nextLine();
 			if (!confirmation.equals(info[1])) {
 				Driver.printMessage("Password does not match confirmation, please try again!\n\n");
 				return parseInfo(scanner, signingUp);
@@ -50,7 +61,7 @@ public class CustomerServicesImpl implements CustomerServices {
 			Driver.printMessage("No customer account was found with the provided login information.\n");
 			return false;
 		} else {
-			Driver.printMessage("Logged in with account: " + customer);
+			Driver.printMessage("Logged in with account: " + customer.getUsername());
 			return true;
 		}
 	}
@@ -73,7 +84,7 @@ public class CustomerServicesImpl implements CustomerServices {
 	@Override
 	public boolean logout() {
 		this.customer = null;
-		Driver.printMessage("You have been logged out.");
+		Driver.printMessage("\nYou have been logged out.\n");
 		return true;
 	}
 }

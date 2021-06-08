@@ -4,6 +4,7 @@ public class Account {
 	private Integer id;
 	private Float balance;
 	private Integer customer_id;
+	private Boolean pending;
 	
 	public Account() {}
 	
@@ -14,6 +15,7 @@ public class Account {
 	public Account(Integer id, Float balance) {
 		this.id = id;
 		this.balance = balance;
+		this.pending = true;
 	}
 
 	public Integer getId() {
@@ -37,7 +39,15 @@ public class Account {
 	}
 	
 	public void setCustomerId(Integer customer_id) {
-		this.customer_id = id;
+		this.customer_id = customer_id;
+	}
+	
+	public Boolean isPending() {
+		return this.pending;
+	}
+	
+	public void setPending(Boolean pending) {
+		this.pending = pending;
 	}
 
 	@Override
@@ -47,6 +57,7 @@ public class Account {
 		result = prime * result + ((balance == null) ? 0 : balance.hashCode());
 		result = prime * result + ((customer_id == null) ? 0 : customer_id.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((pending == null) ? 0 : pending.hashCode());
 		return result;
 	}
 
@@ -69,11 +80,15 @@ public class Account {
 			if (other.id != null) return false;
 		} else if (!id.equals(other.id)) return false;
 		
+		if (pending == null) {
+			if (other.pending != null) return false;
+		} else if (!pending.equals(other.pending)) return false;
+		
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", balance=" + balance + ", customer_id=" + customer_id + "]";
+		return "Account [id=" + id + ", balance=" + balance + ", customer_id=" + customer_id + ", pending=" + pending + "]";
 	}
 }

@@ -1,8 +1,11 @@
+drop table if exists transactions;
 drop table if exists accounts;
 drop table if exists customers;
-drop table if exists transactions;
 
-truncate table accounts;
+--truncate table accounts;
+delete from transactions;
+delete from accounts;
+delete from customers;
 
 create table customers (
 	id serial primary key,
@@ -14,24 +17,37 @@ create table customers (
 create table accounts (
 	id serial primary key,
 	balance numeric(20, 2),
-	customer int references customers -- FK to customers table
+	customer int references customers, -- FK to customers table
+	pending bool
 );
 
 create table transactions (
 	id serial primary key,
 	source int references accounts(id), -- FK to accounts table
 	type varchar(20),
---	amount numeric(20, 2)
 	amount numeric(20, 2),
 	receiver int references accounts(id) -- FK to accounts table, null if type is not "transfer"
 );
 
-create procedure log_transaction(source int, type varchar(20), amount numeric(20, 2), receiver int)
+create or replace procedure "Project_0".log_transaction(source integer, type varchar(20), amount real, receiver integer)
 --returns table (id int, source int, type varchar(20), amount numeric(20, 2), receiver int)
 language sql
 as $$
-	insert into transactions values (default, source, type, amount, receiver) returning *;
+	insert into "Project_0".transactions values (default, source, type, amount, receiver);
+	select 
 $$;
+
+call "Project_0".log_transaction(4, 'test', 50.00, 4);
+
+create or replace procedure "Project_0".update_transaction(id_var integer, type_var varchar(20), amount_var real)
+language sql
+as $$
+	update "Project_0".transactions set type = type_var, amount = amount_var where id = id_var;
+$$;
+
+drop procedure "Project_0".update_transaction(id integer, type_var varchar(20), amount_var real);
+
+insert into transactions values (default, 1, 'withdraw', 50.00, 1);
 
 /*
 create table employees (
@@ -47,26 +63,20 @@ foreign key (customer) references customers(id);
 */
 
 insert into customers values
-(default, 'gerald', 'ex_parrot', true),
-(default, 'jessica', 'camelot', false),
-(default, 'batman', 'robin', false)
-
-update customers
-set "password" = 'ex_parrot'
-where username = 'gerald';
+(default, 'gerald', 'master', true),
+(default, 'visanti', 'suits', false),
+(default, 'chris', 'calvary', false);
 
 insert into accounts values
-(default, 50000.50, 2),
-(default, 30.25, 2),
-(default, 4000.00, 3);
+(default, 50000.50, 2, false),
+(default, 30.25, 2, false),
+(default, 4000.00, 3, false);
 
 -- this won't work if customers doesn't have an entry with id = 3
 insert into accounts values (default, 4.00, 3);
 
 select c.id, c.username, c.password, a.id, a.balance from customers c
 left join accounts a on a.customer = c.id;
-
-select * from customers where username = 'jessica' and password = 'camelot';
 
 select id, balance from accounts where customer = 2;
 
@@ -77,4 +87,6 @@ delete from customers where id = 5;
 insert into customers values (default, 'blah', 'blah', true);
 
 alter sequence customers_id_seq restart with 4;
+
+alter sequence transactions_id_seq restart with 1;
 
