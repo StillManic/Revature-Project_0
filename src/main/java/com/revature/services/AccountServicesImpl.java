@@ -1,9 +1,11 @@
 package com.revature.services;
 
 import java.util.List;
+import java.util.Scanner;
 
 import com.revature.app.Driver;
 import com.revature.models.Account;
+import com.revature.models.Customer;
 import com.revature.models.Transaction;
 import com.revature.repositories.AccountRepository;
 
@@ -20,9 +22,40 @@ public class AccountServicesImpl implements AccountServices {
 	public List<Account> getPendingAccounts() {
 		return AccountRepository.getInstance().getPendingAccounts();
 	}
-
+	
+	private static String[] parseWithdrawOrDepositInfo(Scanner scanner, boolean withdraw) {
+		String[] info = new String[2];
+		Driver.printAccounts(CustomerServicesImpl.getInstance().getCustomer());
+		Driver.printMessage("Please enter the account you wish to %s: ", withdraw ? "withdraw from" : "deposit into");
+		info[0] = scanner.next();
+		scanner.nextLine();
+		Driver.printMessage("Amount to " + (withdraw ? "withdraw: " : "deposit: "), false);
+		info[1] = scanner.next();
+		scanner.nextLine();
+		return info;
+	}
+	
+	private static String[] parseTransferInfo(Scanner scanner) {
+		String[] info = new String[3];
+		Driver.printAccounts(CustomerServicesImpl.getInstance().getCustomer());
+		Driver.printMessage("Please enter the account you wish to transfer from: ", false);
+		info[0] = scanner.next();
+		scanner.nextLine();
+		Driver.printMessage("Please enter the account you wish to transfer to: ", false);
+		info[1] = scanner.next();
+		scanner.nextLine();
+		Driver.printMessage("Amount to transfer: ", false);
+		info[2] = scanner.next();
+		scanner.nextLine();
+		return info;
+	}
+	
 	@Override
-	public boolean withdraw(Integer account_id, Float amount) {
+	public boolean withdraw(Scanner scanner) {
+		String[] command = parseWithdrawOrDepositInfo(scanner, true);
+		Integer account_id = Integer.parseInt(command[0]);
+		Float amount = Float.parseFloat(command[1]);
+		
 		Account account = AccountRepository.getInstance().getById(account_id);
 		if (account != null) {
 			if (amount < 0) {
@@ -38,18 +71,26 @@ public class AccountServicesImpl implements AccountServices {
 				boolean confirmation = Driver.getConfirmation("Are you sure you wish to withdraw $%.2f from account %d?", amount, account_id);
 				if (confirmation) {
 					account.setBalance(account.getBalance() - amount);
-					update(account);
+					update(account, true);
 					TransactionServicesImpl.getInstance().add(new Transaction(account, "withdrawal", amount));
+					Driver.printMessage("You have withdrawn $%.2f from account %d.%n%n", amount, account_id);
+					Driver.logger.info(String.format("Customer %s withdrew $%.2f from account %d.", CustomerServicesImpl.getInstance().getCustomer().getUsername(), amount, account_id));
 					return true;
 				}
 			}
+		} else {
+			Driver.printMessage("You do not have an account with the id of " + account_id);
 		}
 		
 		return false;
 	}
-
+	
 	@Override
-	public boolean deposit(Integer account_id, Float amount) {
+	public boolean deposit(Scanner scanner) {
+		String[] info = parseWithdrawOrDepositInfo(scanner, false);
+		Integer account_id = Integer.parseInt(info[0]);
+		Float amount = Float.parseFloat(info[1]);
+		
 		Account account = AccountRepository.getInstance().getById(account_id);
 		if (account != null) {
 			if (amount < 0) {
@@ -60,20 +101,35 @@ public class AccountServicesImpl implements AccountServices {
 				return false;
 			} else {
 				account.setBalance(account.getBalance() + amount);
-				update(account);
+				update(account, true);
 				TransactionServicesImpl.getInstance().add(new Transaction(account, "deposit", amount));
+				Driver.printMessage("You have depositted $%.2f into account %d.%n%n", amount, account_id);
+				Driver.logger.info(String.format("Customer %s depositted $%.2f into account %d.", CustomerServicesImpl.getInstance().getCustomer().getUsername(), amount, account_id));
 				return true;
 			}
+		} else {
+			Driver.printMessage("You do not have an account with the id of " + account_id);
+			
 		}
-		
 		return false;
 	}
 	
 	@Override
-	public boolean transfer(Integer from_id, Integer to_id, Float amount) {
-		Account from = AccountRepository.getInstance().getById(from_id);
-		Account to = AccountRepository.getInstance().getById(to_id);
-		if (from != null && to != null) {
+	public boolean transfer(Scanner scanner) {
+		String[] info = parseTransferInfo(scanner);
+		Integer from_id = Integer.parseInt(info[0]);
+		Integer to_id = Integer.parseInt(info[1]);
+		Float amount = Float.parseFloat(info[2]);
+		
+		Account from = CustomerServicesImpl.getInstance().getCustomer().getAccounts().get(from_id);
+		Account to = CustomerServicesImpl.getInstance().getCustomer().getAccounts().get(to_id);
+		if (from == null) {
+			Driver.printMessage("You do not have an account with the id of " + from_id);
+			return false;
+		} else if (to == null) {
+			Driver.printMessage("You do not have an account with the id of " + to_id);
+			return false;
+		} else {
 			if (amount < 0) {
 				Driver.printMessage("You cannot transfer a negative amount.");
 				return false;
@@ -84,37 +140,45 @@ public class AccountServicesImpl implements AccountServices {
 				Driver.printMessage("One of the accounts you are attempting to transfer with has not been approved. The transfer could not be completed. Please wait until an employee approves the account(s).");
 				return false;
 			} else {
-				boolean confirmation = Driver.getConfirmation("Are you sure you want to transfer $%.2f from account %d to account %d? Y/N: ", amount, from.getId(), to.getId());
+				boolean confirmation = Driver.getConfirmation("Are you sure you want to transfer $%.2f from account %d to account %d?", amount, from.getId(), to.getId());
 				
 				if (confirmation) {
 					from.setBalance(from.getBalance() - amount);
 					to.setBalance(to.getBalance() + amount);
-					update(from);
-					update(to);
+					update(from, true);
+					update(to, true);
 					TransactionServicesImpl.getInstance().add(new Transaction(from, "transfer", amount, to));
+					Driver.printMessage("Transfer confirmed.");
+					Driver.logger.info(String.format("Customer %s transferred $%.2f from account %d to account %d.", CustomerServicesImpl.getInstance().getCustomer().getUsername(), amount, from_id, to_id));
 					return true;
 				} else {
 					Driver.printMessage("Transfer canceled.");
 					return false;
 				}
 			}
-		} else {
-			Driver.printMessage("One of the provided accounts does not exist.");
-			return false;
 		}
 	}
 	
 	@Override
-	public void apply(Float amount) {
+	public void apply(Scanner scanner) {
+		Driver.printMessage("How much money do you want in the account?: ");
+		Float amount = scanner.nextFloat();
+		if (amount < 0) {
+			Driver.printMessage("You cannot create an account with a negative balance.");
+			return;
+		}
+		
 		Account a = new Account(amount);
 		a.setCustomerId(CustomerServicesImpl.getInstance().getCustomer().getId());
-		a.setPending(true);
+		if (!CustomerServicesImpl.getInstance().getCustomer().isEmployee())	a.setPending(true);
 		AccountRepository.getInstance().add(a);
-		CustomerServicesImpl.getInstance().updateCustomer();
+		CustomerServicesImpl.getInstance().getCustomer().addAccount(a);
+		Driver.printMessage("Your new account with balance $%.2f has been created and is pending approval. It must be approved before it can be used.%n", amount);
 	}
 	
 	@Override
-	public void update(Account account) {
+	public void update(Account account, boolean updateCurrentCustomer) {
+		if (updateCurrentCustomer) CustomerServicesImpl.getInstance().getCustomer().addAccount(account);
 		AccountRepository.getInstance().update(account);
 	}	
 }

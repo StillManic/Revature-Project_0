@@ -52,9 +52,11 @@ public class CustomerRepoTest {
 	public void getByIdTest() {
 		Account a1 = new Account(1, 50000.5f);
 		a1.setCustomerId(2);
+		a1.setPending(false);
 		Account a2 = new Account(2, 30.25f);
 		a2.setCustomerId(2);
-		Customer expected = new Customer("jessica", "camelot", a1, a2);
+		a2.setPending(false);
+		Customer expected = new Customer("visanti", "suits", a1, a2);
 		expected.setId(2);
 		Customer result = CustomerRepository.getInstance().getById(2);
 		Assert.assertEquals(expected, result);
@@ -64,18 +66,20 @@ public class CustomerRepoTest {
 	public void getByUAndPTest() {
 		Account a1 = new Account(1, 50000.5f);
 		a1.setCustomerId(2);
+		a1.setPending(false);
 		Account a2 = new Account(2, 30.25f);
 		a2.setCustomerId(2);
-		Customer expected = new Customer("jessica", "camelot", a1, a2);
+		a2.setPending(false);
+		Customer expected = new Customer("visanti", "suits", a1, a2);
 		expected.setId(2);
-		Customer result = CustomerRepository.getInstance().getByUsernameAndPassword("jessica", "camelot");
+		Customer result = CustomerRepository.getInstance().getByUsernameAndPassword("visanti", "suits");
 		Assert.assertEquals(expected, result);
 	}
 	
 	@Test
 	public void getEmployeesTest() {
 		List<Customer> expected = new ArrayList<Customer>();
-		expected.add(new Customer(1, "gerald", "ex_parrot", true));
+		expected.add(new Customer(1, "gerald", "master", true));
 		List<Customer> result = CustomerRepository.getInstance().getEmployees();
 		Assert.assertEquals(expected, result);
 	}

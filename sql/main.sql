@@ -29,7 +29,7 @@ create table transactions (
 	receiver int references accounts(id) -- FK to accounts table, null if type is not "transfer"
 );
 
-create or replace procedure "Project_0".log_transaction(source integer, type varchar(20), amount real, receiver integer)
+create or replace procedure "Project_0".log_transaction(source integer, type varchar(20), amount numeric(20, 2), receiver integer)
 --returns table (id int, source int, type varchar(20), amount numeric(20, 2), receiver int)
 language sql
 as $$
@@ -37,6 +37,7 @@ as $$
 	select 
 $$;
 
+drop procedure "Project_0".log_transaction(source integer, type varchar(20), amount numeric(20, 2), receiver integer);
 call "Project_0".log_transaction(4, 'test', 50.00, 4);
 
 create or replace procedure "Project_0".update_transaction(id_var integer, type_var varchar(20), amount_var real)
@@ -82,11 +83,13 @@ select id, balance from accounts where customer = 2;
 
 select * from customers where employee = false;
 
-delete from customers where id = 5;
+delete from customers where id = 4;
 
 insert into customers values (default, 'blah', 'blah', true);
 
 alter sequence customers_id_seq restart with 4;
 
 alter sequence transactions_id_seq restart with 1;
+
+alter sequence accounts_id_seq restart with 1;
 

@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import com.revature.models.Account;
 import com.revature.models.Customer;
 import com.revature.models.Transaction;
-import com.revature.repositories.TransactionRepository;
 import com.revature.services.AccountServicesImpl;
 import com.revature.services.CustomerServicesImpl;
 import com.revature.services.TransactionServicesImpl;
@@ -20,10 +19,8 @@ public class Driver {
 	 * Bugs:
 	 * 
 	 * - "pending" in the DB should be changed to "status", signifiying one of three states: pending, approved, or denied
-	 * - withdrawing and depositing does not update the DB
 	 * - control flow everywhere needs to be refined
-	 * - confirmation for transfers: "Y/N" prints twice
-	 * - print out a list of customers for employee option "6"
+	 * - Printing Transaction Log: make the printed entries have nicer formatting
 	 */
 	private enum Menus {
 		MAIN,
@@ -39,37 +36,24 @@ public class Driver {
 	private static String[] customer_menu = { "1. Apply for a new account", "2. Withdraw money", "3. Deposit money", "4. Transfer money"};
 	private static String[] employee_options = { "Approve or reject an account", "View a customer's accounts", "View transaction log" };
 	
-	private static void printAccounts() {
-		Customer customer = CustomerServicesImpl.getInstance().getCustomer();
+	public static void printAccounts(Customer customer) {
 		if (customer == null) {
 			logger.error("printAccounts: customer null");
 			return;
 		}
 		
-		printMessage("\nYou are logged in as user \"" + customer.getUsername() + "\"\n");
-		if (customer.getAccounts() == null || customer.getAccounts().size() == 0) {
-			printMessage("You do not have any accounts currently open.");
-		} else {
-			printMessage("Your accounts:");
-			customer.getAccounts().entrySet().forEach((e) -> {
-				printMessage("    %d: $%.2f%-20s%n", e.getKey(), e.getValue().getBalance(), e.getValue().isPending() ? "Pending" : "");
-			});
-			printMessage("");
-		}
-	}
-	
-	private static void printAccounts(Customer customer) {
-		if (customer == null) {
-			logger.error("printAccounts: customer null");
-			return;
-		}
+		boolean printingCurrentCustomer = customer.equals(CustomerServicesImpl.getInstance().getCustomer());
 		
-		printMessage("\nAccounts for customer \"" + customer.getUsername() + "\":\n");
+		if (printingCurrentCustomer) printMessage("\n\nYou are logged in as user \"" + customer.getUsername() + "\"\n");
+		else printMessage("\nAccounts for customer \"" + customer.getUsername() + "\":\n");
+		
 		if (customer.getAccounts() == null || customer.getAccounts().size() == 0) {
-			printMessage("Customer \"%s\" does not have any accounts.%n", customer.getUsername());
+			if (printingCurrentCustomer) printMessage("You do not have any accounts currently open.");
+			else printMessage("Customer \"%s\" does not have any accounts.%n", customer.getUsername());
 		} else {
+			if (printingCurrentCustomer) printMessage("Your accounts:");
 			customer.getAccounts().entrySet().forEach((e) -> {
-				printMessage("    %d: $%.2f%-20s%n", e.getKey(), e.getValue().getBalance(), e.getValue().isPending());
+				printMessage("    %d: $%.2f    %s%n", e.getKey(), e.getValue().getBalance(), e.getValue().isPending() ? "Pending" : "");
 			});
 			printMessage("");
 		}
@@ -167,116 +151,46 @@ public class Driver {
 		 * "8. Logout (if employee only)"
 		 */
 		String[] command;
-		int fromID, toID;
 		float amount;
-		boolean success;
 		Customer customer = CustomerServicesImpl.getInstance().getCustomer();
 		if (customer == null) {
 			logger.error("handleCustomerMenu: customer null");
 			return;
 		}
 		
-//		while (true) {
-			command = scanner.nextLine().split(" ");
-			switch (command[0]) {
-				case "1":
-					// apply for a new account
-					if (command.length != 2) {
-						printMessage("Please enter \"1\" followed by the amount you wish to start with.");
-						break;
-					}
-					
-					amount = Float.parseFloat(command[1]);
-					AccountServicesImpl.getInstance().apply(amount);
-					printMessage("Your new account with balance $%.2f has been created and is pending approval. It must be approved before it can be used.", amount);
-					break;
-				case "2":
-					// withdraw money - "2 {account_id} {amount}"
-					if (command.length != 3) {
-						printMessage("Please enter \"2\" followed by the account number followed by the amount you wish to withdraw.");
-						break;
-					}
-					
-					fromID = Integer.parseInt(command[1]);
-					if (!customer.getAccounts().containsKey(fromID)) {
-						printMessage("You do not have an account with the id of " + fromID);
-						break;
-					}
-					
-					amount = Float.parseFloat(command[2]);
-					success = AccountServicesImpl.getInstance().withdraw(fromID, amount);
-					if (success) {
-						printMessage("You have withdrawn $%.2f from account %d.%n%n", amount, fromID);
-						logger.info(String.format("Customer %s withdrew $%.2f from account %d.", customer.getUsername(), amount, fromID));
-						printAccounts();
-						printMenu(customer_menu, "Logout", true);
-					}
-					
-					break;
-				case "3":
-					// deposit money - "3 {account_id} {amount}"
-					if (command.length != 3) {
-						printMessage("Please enter \"3\" followed by the account number, followed by the amount you wish to deposit.");
-						break;
-					}
-					
-					fromID = Integer.parseInt(command[1]);
-					if (!customer.getAccounts().containsKey(fromID)) {
-						printMessage("You do not have an account with the id of " + fromID);
-						break;
-					}
-					
-					amount = Float.parseFloat(command[2]);
-					success = AccountServicesImpl.getInstance().deposit(fromID, amount);
-					if (success) {
-						printMessage("You have depositted $%.2f into account %d.%n%n", amount, fromID);
-						
-						logger.info(String.format("Customer %s depositted $%.2f into account %d.", customer.getUsername(), amount, fromID));
-						printAccounts();
-						printMenu(customer_menu, "Logout", true);
-					}
-					
-					break;
-				case "4":
-					// post money transfer - "4 {from_id} {to_id} {amount}
-					if (command.length != 4) {
-						System.out.println("Please enter \"4\" followed by the account number you want to transfer from, followed by the account number you want to transfer to, followed by the amount you wish to transfer.");
-						break;
-					}
-					
-					fromID = Integer.parseInt(command[1]);
-					toID = Integer.parseInt(command[2]);
-					if (!customer.getAccounts().containsKey(fromID)) {
-						System.out.println("You do not have an account with the id of " + fromID);
-						break;
-					} else if (!customer.getAccounts().containsKey(toID)) {
-						System.out.println("You do not have an account with the id of " + toID);
-						break;
-					}
-					
-					amount = Float.parseFloat(command[3]);
-					success = AccountServicesImpl.getInstance().transfer(fromID, toID, amount);
-					if (success) {
-						printMessage("Transfer confirmed.");
-						logger.info(String.format("Customer %s transferred $%.2f from account %d to account %d.", customer.getUsername(), amount, fromID, toID));
-						printAccounts();
-						printMenu(customer_menu, "Logout", true);
-					}
-					
-					break;
-				case "5":
-				case "6":
-				case "7":
-				case "8":
-					// logout (if customer-only or if case "8") / Approve or reject an account
-					if (command[0].equals("8") || (command[0].equals("5") && !customer.isEmployee())) {
-						CustomerServicesImpl.getInstance().logout();
-						currentMenu = Menus.MAIN;
-						return;
-					} else handleEmployeeOptions(command);
-				default: printMessage("Please enter a valid option."); return;
-			}
-//		}
+		command = scanner.nextLine().split(" ");
+		switch (command[0]) {
+			case "1":
+				// apply for a new account
+				AccountServicesImpl.getInstance().apply(scanner);
+				break;
+			case "2":
+				// withdraw money
+				AccountServicesImpl.getInstance().withdraw(scanner);
+				break;
+			case "3":
+				// deposit money
+				AccountServicesImpl.getInstance().deposit(scanner);
+				break;
+			case "4":
+				// post money transfer
+				AccountServicesImpl.getInstance().transfer(scanner);
+				break;
+			case "5":
+			case "6":
+			case "7":
+			case "8":
+				// logout (if customer-only or if case "8") / Approve or reject an account
+				if (command[0].equals("8") || (command[0].equals("5") && !customer.isEmployee())) {
+					String username = CustomerServicesImpl.getInstance().getCustomer().getUsername();
+					logger.info("Customer " + username + " logged out.");
+					CustomerServicesImpl.getInstance().logout();
+					currentMenu = Menus.MAIN;
+					return;
+				} else handleEmployeeOptions(command);
+				break;
+			default: printMessage("Please enter a valid option.\n"); return;
+		}
 	}
 	
 	private static void handleEmployeeOptions(String[] command) {
@@ -290,25 +204,27 @@ public class Driver {
 			case "5":
 				// Approve or reject an account
 				List<Account> pending = AccountServicesImpl.getInstance().getPendingAccounts();
-				printMessage("Pending accounts:");
+				printMessage("\nPending accounts:");
 				for (Account a : pending) {
 					Customer c = CustomerServicesImpl.getInstance().getCustomer(a.getCustomerId());
 					printMessage("    Customer: %s, Requested balance: $%.2f%n", c.getUsername(), a.getBalance());
 					boolean approved = getConfirmation("    Approved? ");
 					if (approved) {
 						a.setPending(false);
-						AccountServicesImpl.getInstance().update(a);
+						AccountServicesImpl.getInstance().update(a, false);
+						printMessage("Account %d with balance $%.2f for Customer %s has been approved.%n", a.getId(), a.getBalance(), c.getUsername());
 					}
 				}
 				break;
 			case "6":
 				// View a customer's accounts
-				// "6 {customer_id}
-				if (command.length != 2) {
-					printMessage("Please enter \"6\" followed by the customer id.");
-					break;
-				}
-				Customer c = CustomerServicesImpl.getInstance().getCustomer(Integer.parseInt(command[1]));
+				printMessage("Choose a Customer to view:");
+				CustomerServicesImpl.getInstance().getAllCustomers().entrySet().forEach((e) -> {
+					printMessage("    %d. %s%n", e.getKey(), e.getValue().getUsername());
+				});
+				printCarrot();
+				int customer_id = scanner.nextInt();
+				Customer c = CustomerServicesImpl.getInstance().getCustomer(customer_id);
 				printAccounts(c);
 				break;
 			case "7":
@@ -334,7 +250,7 @@ public class Driver {
 					quit = handleMainMenu();
 					break;
 				case CUSTOMER_MAIN:
-					printAccounts();
+					printAccounts(CustomerServicesImpl.getInstance().getCustomer());
 					printMenu(customer_menu, "Logout", true, CustomerServicesImpl.getInstance().getCustomer().isEmployee());
 					handleCustomerMenu();
 					break;

@@ -1,86 +1,28 @@
-INFO  | 2021-06-07 10:39:24 | [main] app.Driver (Driver.java:115) - Customer %s logged in.
-INFO  | 2021-06-07 10:41:03 | [main] app.Driver (Driver.java:113) - Customer %s logged in.
-INFO  | 2021-06-07 10:41:53 | [main] app.Driver (Driver.java:113) - Customer %s logged in.
-INFO  | 2021-06-07 10:45:29 | [main] app.Driver (Driver.java:118) - Customer %s logged in.
-INFO  | 2021-06-07 14:12:57 | [main] app.Driver (Driver.java:104) - Customer %s logged in.
-INFO  | 2021-06-07 14:13:46 | [main] app.Driver (Driver.java:104) - Customer %s logged in.
-INFO  | 2021-06-07 14:14:11 | [main] app.Driver (Driver.java:104) - Customer %s logged in.
-INFO  | 2021-06-07 14:14:48 | [main] app.Driver (Driver.java:104) - Customer %s logged in.
-INFO  | 2021-06-07 14:15:52 | [main] app.Driver (Driver.java:104) - Customer %s logged in.
-INFO  | 2021-06-07 14:39:22 | [main] app.Driver (Driver.java:105) - Customer %s logged in.
-INFO  | 2021-06-07 14:40:02 | [main] app.Driver (Driver.java:105) - Customer %s logged in.
-INFO  | 2021-06-07 16:37:25 | [main] app.Driver (Driver.java:128) - Customer %s logged in.
-INFO  | 2021-06-07 16:39:32 | [main] app.Driver (Driver.java:128) - Customer %s logged in.
-INFO  | 2021-06-07 16:45:41 | [main] app.Driver (Driver.java:129) - Customer visanti logged in.
-INFO  | 2021-06-07 16:48:47 | [main] app.Driver (Driver.java:129) - Customer visanti logged in.
-INFO  | 2021-06-07 16:55:43 | [main] app.Driver (Driver.java:133) - Customer visanti logged in.
-INFO  | 2021-06-07 16:57:37 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:03:07 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:05:21 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:06:29 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:07:25 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:10:20 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:12:20 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:13:11 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:13:55 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:14:50 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:15:44 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:17:49 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:19:45 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:21:55 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:31:31 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:32:54 | [main] app.Driver (Driver.java:135) - Customer gerald logged in.
-INFO  | 2021-06-07 17:36:44 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:36:52 | [main] app.Driver (Driver.java:135) - Customer gerald logged in.
-INFO  | 2021-06-07 17:37:15 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:39:19 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:41:57 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:42:06 | [main] app.Driver (Driver.java:208) - Customer %s withdrew $%.2f from account %d.
-INFO  | 2021-06-07 17:50:02 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:50:10 | [main] app.Driver (Driver.java:208) - Customer %s withdrew $%.2f from account %d.
-INFO  | 2021-06-07 17:57:48 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 17:58:36 | [main] app.Driver (Driver.java:135) - Customer gerald logged in.
-INFO  | 2021-06-07 18:00:13 | [main] app.Driver (Driver.java:135) - Customer gerald logged in.
-INFO  | 2021-06-07 18:11:58 | [main] app.Driver (Driver.java:135) - Customer gerald logged in.
-INFO  | 2021-06-07 18:12:12 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 18:12:19 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 18:20:41 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 18:20:47 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 18:22:54 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 18:23:01 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 18:24:27 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 18:24:32 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 18:25:13 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 18:25:22 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 19:00:50 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 19:00:56 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 19:01:51 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 19:01:56 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 19:06:50 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 19:06:56 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 19:07:42 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 19:07:48 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 19:09:48 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 19:09:53 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 19:12:38 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 19:12:43 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 19:25:11 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 19:25:58 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 19:27:17 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 19:27:21 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 19:52:59 | [main] app.Driver (Driver.java:135) - Customer visanti logged in.
-INFO  | 2021-06-07 19:53:05 | [main] app.Driver (Driver.java:208) - Customer visanti withdrew $50.00 from account 4.
-INFO  | 2021-06-07 20:31:38 | [main] app.Driver (Driver.java:146) - Customer test has signed up.
-INFO  | 2021-06-07 20:33:57 | [main] app.Driver (Driver.java:136) - Customer gerald logged in.
-INFO  | 2021-06-07 20:34:27 | [main] app.Driver (Driver.java:136) - Customer test logged in.
-INFO  | 2021-06-07 20:34:40 | [main] app.Driver (Driver.java:209) - Customer test withdrew $20.00 from account 5.
-INFO  | 2021-06-07 20:35:43 | [main] app.Driver (Driver.java:233) - Customer test depositted $25.00 into account 5.
-INFO  | 2021-06-07 20:37:25 | [main] app.Driver (Driver.java:136) - Customer gerald logged in.
-INFO  | 2021-06-07 20:37:50 | [main] app.Driver (Driver.java:136) - Customer test logged in.
-INFO  | 2021-06-07 20:38:32 | [main] app.Driver (Driver.java:260) - Customer test transferred $25.00 from account 6 to account 5.
-INFO  | 2021-06-07 20:42:33 | [main] app.Driver (Driver.java:136) - Customer test logged in.
-INFO  | 2021-06-07 20:42:45 | [main] app.Driver (Driver.java:209) - Customer test withdrew $50.00 from account 5.
-INFO  | 2021-06-07 20:43:03 | [main] app.Driver (Driver.java:233) - Customer test depositted $50.00 into account 5.
-INFO  | 2021-06-07 20:43:17 | [main] app.Driver (Driver.java:260) - Customer test transferred $25.00 from account 6 to account 5.
-INFO  | 2021-06-07 20:43:36 | [main] app.Driver (Driver.java:260) - Customer test transferred $25.00 from account 5 to account 6.
-INFO  | 2021-06-07 20:43:46 | [main] app.Driver (Driver.java:136) - Customer gerald logged in.
+
+INFO  | 2021-06-08 11:12:19 | [main] app.Driver (Driver.java:124) - Customer visanti logged in.
+INFO  | 2021-06-08 11:12:41 | [main] app.Driver (Driver.java:196) - Customer visanti withdrew $5.00 from account 2.
+INFO  | 2021-06-08 11:16:42 | [main] app.Driver (Driver.java:124) - Customer visanti logged in.
+INFO  | 2021-06-08 11:16:56 | [main] app.Driver (Driver.java:220) - Customer visanti depositted $5.00 into account 2.
+INFO  | 2021-06-08 11:24:46 | [main] app.Driver (Driver.java:124) - Customer visanti logged in.
+INFO  | 2021-06-08 11:24:59 | [main] app.Driver (Driver.java:196) - Customer visanti withdrew $5.00 from account 2.
+INFO  | 2021-06-08 13:25:41 | [main] app.Driver (Driver.java:124) - Customer visanti logged in.
+INFO  | 2021-06-08 13:25:53 | [main] app.Driver (Driver.java:220) - Customer visanti depositted $5.00 into account 2.
+INFO  | 2021-06-08 13:32:47 | [main] app.Driver (Driver.java:247) - Customer visanti transferred $0.50 from account 1 to account 2.
+INFO  | 2021-06-08 13:33:00 | [main] app.Driver (Driver.java:260) - Customer visanti logged out.
+INFO  | 2021-06-08 13:40:55 | [main] app.Driver (Driver.java:124) - Customer visanti logged in.
+INFO  | 2021-06-08 13:41:11 | [main] app.Driver (Driver.java:260) - Customer visanti logged out.
+INFO  | 2021-06-08 13:42:55 | [main] app.Driver (Driver.java:123) - Customer visanti logged in.
+INFO  | 2021-06-08 13:43:57 | [main] app.Driver (Driver.java:195) - Customer visanti withdrew $5.00 from account 2.
+INFO  | 2021-06-08 13:58:36 | [main] app.Driver (Driver.java:123) - Customer visanti logged in.
+INFO  | 2021-06-08 13:58:54 | [main] app.Driver (Driver.java:219) - Customer visanti depositted $5.00 into account 2.
+INFO  | 2021-06-08 15:29:23 | [main] app.Driver (Driver.java:123) - Customer visanti logged in.
+INFO  | 2021-06-08 15:30:19 | [main] services.AccountServicesImpl (AccountServicesImpl.java:106) - Customer visanti withdrew $0.75 from account 2.
+INFO  | 2021-06-08 15:31:20 | [main] app.Driver (Driver.java:258) - Customer visanti logged out.
+INFO  | 2021-06-08 15:32:35 | [main] app.Driver (Driver.java:123) - Customer visanti logged in.
+INFO  | 2021-06-08 15:33:15 | [main] services.AccountServicesImpl (AccountServicesImpl.java:158) - Customer visanti depositted $500.00 into account 1.
+INFO  | 2021-06-08 15:34:33 | [main] services.AccountServicesImpl (AccountServicesImpl.java:237) - Customer visanti transferred $500.00 from account 1 to account 2.
+INFO  | 2021-06-08 15:40:54 | [main] app.Driver (Driver.java:258) - Customer visanti logged out.
+INFO  | 2021-06-08 15:41:04 | [main] app.Driver (Driver.java:123) - Customer chris logged in.
+INFO  | 2021-06-08 15:41:33 | [main] app.Driver (Driver.java:258) - Customer chris logged out.
+INFO  | 2021-06-08 15:41:38 | [main] app.Driver (Driver.java:123) - Customer gerald logged in.
+INFO  | 2021-06-08 16:11:11 | [main] app.Driver (Driver.java:258) - Customer gerald logged out.

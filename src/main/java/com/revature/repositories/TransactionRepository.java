@@ -1,5 +1,6 @@
 package com.revature.repositories;
 
+//import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +31,7 @@ public class TransactionRepository implements GenericRepository<Transaction> {
 //			CallableStatement cs = conn.prepareCall(sql);
 //			cs.setInt(1, t.getSource().getId());
 //			cs.setString(2, t.getType());
-//			cs.setFloat(3, t.getAmount());
+//			cs.setBigDecimal(3, new BigDecimal(t.getAmount())); // this is needed because it maps to "numeric", where float doesn't for some reason...
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, t.getSource().getId());
 			ps.setString(2, t.getType());

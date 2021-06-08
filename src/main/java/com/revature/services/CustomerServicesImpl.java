@@ -1,8 +1,10 @@
 package com.revature.services;
 
+import java.util.Map;
 import java.util.Scanner;
 
 import com.revature.app.Driver;
+import com.revature.models.Account;
 import com.revature.models.Customer;
 import com.revature.repositories.CustomerRepository;
 
@@ -29,6 +31,10 @@ public class CustomerServicesImpl implements CustomerServices {
 	public Customer updateCustomer() {
 		this.customer = CustomerRepository.getInstance().getById(this.customer.getId());
 		return this.customer;
+	}
+	
+	public void updateAccount(Account account) {
+		this.customer.addAccount(account);
 	}
 	
 	private static String[] parseInfo(Scanner scanner, boolean signingUp) {
@@ -60,10 +66,7 @@ public class CustomerServicesImpl implements CustomerServices {
 		if (customer == null) {
 			Driver.printMessage("No customer account was found with the provided login information.\n");
 			return false;
-		} else {
-			Driver.printMessage("Logged in with account: " + customer.getUsername());
-			return true;
-		}
+		} else return true;
 	}
 
 	@Override
@@ -86,5 +89,10 @@ public class CustomerServicesImpl implements CustomerServices {
 		this.customer = null;
 		Driver.printMessage("\nYou have been logged out.\n");
 		return true;
+	}
+	
+	@Override
+	public Map<Integer, Customer> getAllCustomers() {
+		return CustomerRepository.getInstance().getAll();
 	}
 }
