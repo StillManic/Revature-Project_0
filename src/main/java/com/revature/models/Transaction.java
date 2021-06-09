@@ -1,5 +1,9 @@
 package com.revature.models;
 
+import java.text.NumberFormat;
+
+import com.revature.services.CustomerServicesImpl;
+
 public class Transaction {
 	private Integer id;
 	private Account source;
@@ -109,5 +113,25 @@ public class Transaction {
 		return "Transaction [id=" + id + ", source=" + source + ", type=" + type + ", amount=" + amount + ", receiver=" + receiver + "]";
 	}
 
-	
+	public String toPrettyString() {
+		int source_id = this.source.getId();
+		String source_customer_name = CustomerServicesImpl.getInstance().getCustomer(this.source.getCustomerId()).getUsername();
+		String source_balance = NumberFormat.getCurrencyInstance().format(this.source.getBalance());
+		String amount_format = NumberFormat.getCurrencyInstance().format(this.amount);
+		
+		String str = String.format("Transaction %3d -> (%d) %s: %10s | %-10s of %10s", this.id, source_id, source_customer_name, source_balance, this.type, amount_format);
+		
+		StringBuilder builder = new StringBuilder(str);
+		
+		if (this.type.equalsIgnoreCase("transfer")) {
+			int receiver_id = this.receiver.getId();
+			String receiver_customer_name = CustomerServicesImpl.getInstance().getCustomer(this.receiver.getCustomerId()).getUsername();
+			float receiver_balance = this.receiver.getBalance();
+			
+			str = String.format(" to (%d) %s: $%.2f", receiver_id, receiver_customer_name, receiver_balance);
+			builder.append(str);
+		}
+		
+		return builder.toString();
+	}
 }

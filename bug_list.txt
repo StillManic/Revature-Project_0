@@ -1,0 +1,5 @@
+printing transaction log: are the account balances correct?
+printing account balances: use NumberFormat
+
+Transaction 1 -> (2) visanti: $530.00 | deposit of $5.00
+Transaction 2 -> (1) visanti: $50000.00 | transfer of $0.50 to (2) visanti: $530.00

@@ -56,6 +56,11 @@ public class AccountServicesImpl implements AccountServices {
 		Integer account_id = Integer.parseInt(command[0]);
 		Float amount = Float.parseFloat(command[1]);
 		
+		if (!CustomerServicesImpl.getInstance().getCustomer().getAccounts().containsKey(account_id)) {
+			Driver.printMessage("You are not authorized to withdraw from account %d.%n", account_id);
+			return false;
+		}
+		
 		Account account = AccountRepository.getInstance().getById(account_id);
 		if (account != null) {
 			if (amount < 0) {
@@ -73,7 +78,7 @@ public class AccountServicesImpl implements AccountServices {
 					account.setBalance(account.getBalance() - amount);
 					update(account, true);
 					TransactionServicesImpl.getInstance().add(new Transaction(account, "withdrawal", amount));
-					Driver.printMessage("You have withdrawn $%.2f from account %d.%n%n", amount, account_id);
+					Driver.printMessage("You have withdrawn $%.2f from account %d.%n", amount, account_id);
 					Driver.logger.info(String.format("Customer %s withdrew $%.2f from account %d.", CustomerServicesImpl.getInstance().getCustomer().getUsername(), amount, account_id));
 					return true;
 				}
@@ -91,6 +96,11 @@ public class AccountServicesImpl implements AccountServices {
 		Integer account_id = Integer.parseInt(info[0]);
 		Float amount = Float.parseFloat(info[1]);
 		
+		if (!CustomerServicesImpl.getInstance().getCustomer().getAccounts().containsKey(account_id)) {
+			Driver.printMessage("You are not authorized to deposit money into account %d.%n", account_id);
+			return false;
+		}
+		
 		Account account = AccountRepository.getInstance().getById(account_id);
 		if (account != null) {
 			if (amount < 0) {
@@ -103,7 +113,7 @@ public class AccountServicesImpl implements AccountServices {
 				account.setBalance(account.getBalance() + amount);
 				update(account, true);
 				TransactionServicesImpl.getInstance().add(new Transaction(account, "deposit", amount));
-				Driver.printMessage("You have depositted $%.2f into account %d.%n%n", amount, account_id);
+				Driver.printMessage("You have depositted $%.2f into account %d.%n", amount, account_id);
 				Driver.logger.info(String.format("Customer %s depositted $%.2f into account %d.", CustomerServicesImpl.getInstance().getCustomer().getUsername(), amount, account_id));
 				return true;
 			}
@@ -120,6 +130,14 @@ public class AccountServicesImpl implements AccountServices {
 		Integer from_id = Integer.parseInt(info[0]);
 		Integer to_id = Integer.parseInt(info[1]);
 		Float amount = Float.parseFloat(info[2]);
+		
+		if (!CustomerServicesImpl.getInstance().getCustomer().getAccounts().containsKey(from_id)) {
+			Driver.printMessage("You are not authorized to transfer money out of account %d.%n", from_id);
+			return false;
+		} else if (!CustomerServicesImpl.getInstance().getCustomer().getAccounts().containsKey(to_id)) {
+			Driver.printMessage("You are not authorized to transfer money into account %d.%n", to_id);
+			return false;
+		}
 		
 		Account from = CustomerServicesImpl.getInstance().getCustomer().getAccounts().get(from_id);
 		Account to = CustomerServicesImpl.getInstance().getCustomer().getAccounts().get(to_id);
@@ -161,8 +179,9 @@ public class AccountServicesImpl implements AccountServices {
 	
 	@Override
 	public void apply(Scanner scanner) {
-		Driver.printMessage("How much money do you want in the account?: ");
+		Driver.printMessage("How much money do you want in the account?: ", false);
 		Float amount = scanner.nextFloat();
+		scanner.nextLine();
 		if (amount < 0) {
 			Driver.printMessage("You cannot create an account with a negative balance.");
 			return;

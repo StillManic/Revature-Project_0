@@ -1,5 +1,6 @@
 package com.revature.app;
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -44,23 +45,22 @@ public class Driver {
 		
 		boolean printingCurrentCustomer = customer.equals(CustomerServicesImpl.getInstance().getCustomer());
 		
-		if (printingCurrentCustomer) printMessage("\n\nYou are logged in as user \"" + customer.getUsername() + "\"\n");
+		if (printingCurrentCustomer) printMessage("\n\n\nYou are logged in as user \"" + customer.getUsername() + "\"\n");
 		else printMessage("\nAccounts for customer \"" + customer.getUsername() + "\":\n");
 		
 		if (customer.getAccounts() == null || customer.getAccounts().size() == 0) {
-			if (printingCurrentCustomer) printMessage("You do not have any accounts currently open.");
+			if (printingCurrentCustomer) printMessage("You do not have any accounts currently open.\n");
 			else printMessage("Customer \"%s\" does not have any accounts.%n", customer.getUsername());
 		} else {
 			if (printingCurrentCustomer) printMessage("Your accounts:");
 			customer.getAccounts().entrySet().forEach((e) -> {
-				printMessage("    %d: $%.2f    %s%n", e.getKey(), e.getValue().getBalance(), e.getValue().isPending() ? "Pending" : "");
+				printMessage("    %d: %10s    %s%n", e.getKey(), NumberFormat.getCurrencyInstance().format(e.getValue().getBalance()), e.getValue().isPending() ? "Pending" : "");
 			});
-			printMessage("");
 		}
 	}
 	
 	private static void printMenu(String[] menu, String extraOption, boolean printCarrot) {
-		printMessage("Please select an option:\n");
+		printMessage("\nPlease select an option:\n");
 		for (String option : menu) printMessage(option);
 		if (extraOption != null && !extraOption.isEmpty()) printMessage("" + (menu.length + 1) + ". " + extraOption);
 		if (printCarrot) printCarrot();
@@ -134,7 +134,7 @@ public class Driver {
 					printMenu(main_menu, "Quit", true);
 					return false;
 				}				
-			case 3: printMessage("Goodbye!"); return true;
+			case 3: printMessage("\nGoodbye!"); return true;
 			default: printMessage("Please enter a valid option."); return false;
 		}
 	}
@@ -151,7 +151,6 @@ public class Driver {
 		 * "8. Logout (if employee only)"
 		 */
 		String[] command;
-		float amount;
 		Customer customer = CustomerServicesImpl.getInstance().getCustomer();
 		if (customer == null) {
 			logger.error("handleCustomerMenu: customer null");
@@ -189,7 +188,7 @@ public class Driver {
 					return;
 				} else handleEmployeeOptions(command);
 				break;
-			default: printMessage("Please enter a valid option.\n"); return;
+			default: printMessage("Please enter a valid option."); return;
 		}
 	}
 	
@@ -204,6 +203,12 @@ public class Driver {
 			case "5":
 				// Approve or reject an account
 				List<Account> pending = AccountServicesImpl.getInstance().getPendingAccounts();
+				
+				if (pending.isEmpty()) {
+					printMessage("\nThere are no pending accounts.");
+					break;
+				}
+				
 				printMessage("\nPending accounts:");
 				for (Account a : pending) {
 					Customer c = CustomerServicesImpl.getInstance().getCustomer(a.getCustomerId());
@@ -224,6 +229,7 @@ public class Driver {
 				});
 				printCarrot();
 				int customer_id = scanner.nextInt();
+				scanner.nextLine();
 				Customer c = CustomerServicesImpl.getInstance().getCustomer(customer_id);
 				printAccounts(c);
 				break;
@@ -231,8 +237,7 @@ public class Driver {
 				// View transaction log
 				Map<Integer, Transaction> transactions = TransactionServicesImpl.getInstance().getAll();
 				printMessage("\n\n\nTransaction Log:");
-				transactions.values().stream().forEach((t) -> printMessage("	id: %d, source: %s, type: %s, amount: $%.2f, receiver: %s%n", t.getId(), t.getSource(), t.getType(), t.getAmount(), t.getReceiver()));
-				printMessage("\n\n");
+				transactions.values().stream().forEach((t) -> printMessage("    " + t.toPrettyString()));
 				break;
 			default: break;
 		}

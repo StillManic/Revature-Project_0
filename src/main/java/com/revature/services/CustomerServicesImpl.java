@@ -48,7 +48,7 @@ public class CustomerServicesImpl implements CustomerServices {
 		scanner.nextLine();
 		
 		if (signingUp) {
-			Driver.printMessage("Confirm Password: ");
+			Driver.printMessage("Confirm Password: ", false);
 			String confirmation = scanner.nextLine();
 			if (!confirmation.equals(info[1])) {
 				Driver.printMessage("Password does not match confirmation, please try again!\n\n");
