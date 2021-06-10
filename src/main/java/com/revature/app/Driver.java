@@ -35,7 +35,7 @@ public class Driver {
 	public static Scanner scanner;
 	private static String[] main_menu = { "1. Login", "2. Sign Up" };
 	private static String[] customer_menu = { "1. Apply for a new account", "2. Withdraw money", "3. Deposit money", "4. Transfer money"};
-	private static String[] employee_options = { "Approve or reject an account", "View a customer's accounts", "View transaction log" };
+	private static String[] employee_options = { "Approve or reject accounts", "View a customer's accounts", "View transaction log" };
 	
 	public static void printAccounts(Customer customer) {
 		if (customer == null) {
@@ -54,7 +54,7 @@ public class Driver {
 		} else {
 			if (printingCurrentCustomer) printMessage("Your accounts:");
 			customer.getAccounts().entrySet().forEach((e) -> {
-				printMessage("    %d: %10s    %s%n", e.getKey(), NumberFormat.getCurrencyInstance().format(e.getValue().getBalance()), e.getValue().isPending() ? "Pending" : "");
+				printMessage("    %d: %15s    %s%n", e.getKey(), NumberFormat.getCurrencyInstance().format(e.getValue().getBalance()), e.getValue().isPending() ? "Pending" : "");
 			});
 		}
 	}

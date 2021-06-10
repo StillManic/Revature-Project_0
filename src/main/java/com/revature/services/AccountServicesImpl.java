@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,7 +39,7 @@ public class AccountServicesImpl implements AccountServices {
 	private static String[] parseTransferInfo(Scanner scanner) {
 		String[] info = new String[3];
 		Driver.printAccounts(CustomerServicesImpl.getInstance().getCustomer());
-		Driver.printMessage("Please enter the account you wish to transfer from: ", false);
+		Driver.printMessage("\nPlease enter the account you wish to transfer from: ", false);
 		info[0] = scanner.next();
 		scanner.nextLine();
 		Driver.printMessage("Please enter the account you wish to transfer to: ", false);
@@ -189,10 +190,14 @@ public class AccountServicesImpl implements AccountServices {
 		
 		Account a = new Account(amount);
 		a.setCustomerId(CustomerServicesImpl.getInstance().getCustomer().getId());
-		if (!CustomerServicesImpl.getInstance().getCustomer().isEmployee())	a.setPending(true);
+		a.setPending(!CustomerServicesImpl.getInstance().getCustomer().isEmployee());
 		AccountRepository.getInstance().add(a);
 		CustomerServicesImpl.getInstance().getCustomer().addAccount(a);
-		Driver.printMessage("Your new account with balance $%.2f has been created and is pending approval. It must be approved before it can be used.%n", amount);
+		if (CustomerServicesImpl.getInstance().getCustomer().isEmployee()) {
+			Driver.printMessage("Your new account with balance %s has been created.", NumberFormat.getCurrencyInstance().format(amount));
+		} else {
+			Driver.printMessage("Your new account with balance %s has been created and is pending approval. It must be approved before it can be used.%n", NumberFormat.getCurrencyInstance().format(amount));
+		}
 	}
 	
 	@Override

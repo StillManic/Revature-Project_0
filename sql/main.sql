@@ -66,7 +66,8 @@ foreign key (customer) references customers(id);
 insert into customers values
 (default, 'gerald', 'master', true),
 (default, 'visanti', 'suits', false),
-(default, 'chris', 'calvary', false);
+(default, 'chris', 'calvary', false),
+(default, 'jessica', 'camelot', false);
 
 insert into accounts values
 (default, 50000.50, 2, false),
@@ -87,9 +88,11 @@ delete from customers where id = 4;
 
 insert into customers values (default, 'blah', 'blah', true);
 
-alter sequence customers_id_seq restart with 4;
+alter sequence customers_id_seq restart with 5;
 
 alter sequence transactions_id_seq restart with 1;
 
 alter sequence accounts_id_seq restart with 1;
+
+delete from accounts where id = 7;
 

@@ -23,7 +23,7 @@ import com.revature.utils.JDBCConnection;
 public class CustomerRepoTest {
 	private static Savepoint sp;
 	private static Connection conn;
-	private Integer expectedId = 4;
+	private Integer expectedId = 5;
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -50,10 +50,10 @@ public class CustomerRepoTest {
 	
 	@Test
 	public void getByIdTest() {
-		Account a1 = new Account(1, 50000.5f);
+		Account a1 = new Account(1, 50000.00f);
 		a1.setCustomerId(2);
 		a1.setPending(false);
-		Account a2 = new Account(2, 30.25f);
+		Account a2 = new Account(2, 530.00f);
 		a2.setCustomerId(2);
 		a2.setPending(false);
 		Customer expected = new Customer("visanti", "suits", a1, a2);
@@ -64,10 +64,10 @@ public class CustomerRepoTest {
 	
 	@Test
 	public void getByUAndPTest() {
-		Account a1 = new Account(1, 50000.5f);
+		Account a1 = new Account(1, 50000.00f);
 		a1.setCustomerId(2);
 		a1.setPending(false);
-		Account a2 = new Account(2, 30.25f);
+		Account a2 = new Account(2, 530.00f);
 		a2.setCustomerId(2);
 		a2.setPending(false);
 		Customer expected = new Customer("visanti", "suits", a1, a2);
